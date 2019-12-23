@@ -38,6 +38,18 @@ then
 	apt-get install -y keepassxc
 fi
 
+# Instalo spotify
+echo "¿Quieres instalar spotify?"
+read -p "y/n > " OPTION
+
+if [[ "$OPTION" == "Y" || "$OPTION" == "y" ]]
+then
+	# You will first need to configure our debian repository
+	curl -sS https://download.spotify.com/debian/pubkey.gpg | apt-key add - 
+	echo "deb http://repository.spotify.com stable non-free" | tee /etc/apt/sources.list.d/spotify.list
+	apt-get update && sudo apt-get install spotify-client
+fi
+
 # Creo el usuario FSIE con password Fsievalencia
 echo "¿Quieres crear el usuario FSIE VALENCIA?"
 read -p "y/n > " OPTION
