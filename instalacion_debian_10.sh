@@ -4,6 +4,7 @@
 # installations. It will download and install some software and create user
 # accounts in order to automate the process
 
+
 # Only if a user is root the script will be executed
 if [[ "${UID}" -ne 0 ]]
 then
@@ -56,7 +57,7 @@ read -p "y/n > " OPTION
 
 if [[ "$OPTION" == "Y" || "$OPTION" == "y" ]]
 then
-	useradd -c "FSIE VALENCIA" -m fsievalencia
+	useradd -c "FSIE VALENCIA" -m fsievalencia 2>> error.log || echo "The previous error message was issued on $(date)" 1>> error.log
 	# Check if the useradd command succeded
 	if [[ "${?}" -ne 0 ]]
 	then
@@ -85,13 +86,14 @@ do
 		read -p "Enter the user name: " USER_NAME
 		read -p "Enter the person's name whom this account is for: " COMMENT
 		
-		#Create the user
-		useradd -c "${COMMENT}" -m ${USER_NAME}
+		# Create the user
+		# if useradd fails its error message was recorded in error.log with its date after the message
+		useradd -c "${COMMENT}" -m ${USER_NAME} 2>> error.log || echo "The previous error message was issued on $(date)" 1>> error.log
 			
 		# Check if the useradd command succeded
 		if [[ "${?}" -ne 0 ]]
 		then
-			echo "Error ${?}. It wasn't be able to create the account"
+			echo "Error ${?} registered in error.log. It wasn't be able to create the account."
 		else
 			# Force password change on first loginp
 			echo "${USER_NAME}:qazwsxedc" | chpasswd
